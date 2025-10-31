@@ -119,7 +119,7 @@ def main():
                         message_placeholder.success(f"Added {product['name']} to Google Sheets!")
 
                         # Wait 10 seconds
-                        time.sleep(10)
+                        time.sleep(1)
 
                         # Clear the message
                         message_placeholder.empty()
