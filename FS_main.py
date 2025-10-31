@@ -50,13 +50,12 @@ def main():
     for i, product in enumerate(products):
         col = cols[i % 4]
 
-        # Load image
+        # Load image and convert to base64
         with open(product["image"], "rb") as f:
-            img_data = f.read()
-        img_base64 = base64.b64encode(img_data).decode("utf-8")
+            img_base64 = base64.b64encode(f.read()).decode("utf-8")
 
-        # Create clickable button with image
         with col:
+            # POS tile with image, name, and price
             st.markdown(
                 f"""
                 <div style="
@@ -65,29 +64,75 @@ def main():
                     background: white url('data:image/jpg;base64,{img_base64}') center/contain no-repeat;
                     border: 2px solid #ddd;
                     border-radius: 10px;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
                     display: flex;
-                    align-items: flex-end;
-                    justify-content: center;
-                    margin-bottom: 8px;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    align-items: center;
+                    margin-bottom: 10px;
                     cursor: pointer;
+                    text-align: center;
                 ">
-                    <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; text-align: center; border-radius: 0 0 10px 10px;">
-                        {product["name"]}
+                    <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; padding: 2px; border-radius: 0 0 10px 10px;">
+                        {product["name"]} - ${product["price"]:.2f}
                     </span>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-            if st.button(f"Select {product['name']}", key=product["name"]):
+            # Button to add item to Google Sheets
+            if st.button(f"Add {product['name']}", key=product["name"]):
                 new_row = pd.DataFrame(
-                    [[product["name"], 1, pd.Timestamp.now()]],
-                    columns=["Item", "Quantity", "Timestamp"]
+                    [[product["name"], product["price"], 1, datetime.now()]],
+                    columns=["Item", "Price", "Quantity", "Timestamp"]
                 )
                 updated_df = pd.concat([df, new_row], ignore_index=True)
                 conn.update(worksheet="Orders", data=updated_df)
-                st.success(f"Added {product['name']} to Google Sheets!")
+                st.success(f"Added {product['name']} (${product['price']}) to Google Sheets!")
+    # # --- Display grid layout ---
+    # cols = st.columns(4)  # 4 items per row
+
+    # for i, product in enumerate(products):
+    #     col = cols[i % 4]
+
+    #     # Load image
+    #     with open(product["image"], "rb") as f:
+    #         img_data = f.read()
+    #     img_base64 = base64.b64encode(img_data).decode("utf-8")
+
+    #     # Create clickable button with image
+    #     with col:
+    #         st.markdown(
+    #             f"""
+    #             <div style="
+    #                 width: 160px;
+    #                 height: 160px;
+    #                 background: white url('data:image/jpg;base64,{img_base64}') center/contain no-repeat;
+    #                 border: 2px solid #ddd;
+    #                 border-radius: 10px;
+    #                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    #                 display: flex;
+    #                 align-items: flex-end;
+    #                 justify-content: center;
+    #                 margin-bottom: 8px;
+    #                 cursor: pointer;
+    #             ">
+    #                 <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; text-align: center; border-radius: 0 0 10px 10px;">
+    #                     {product["name"]}
+    #                 </span>
+    #             </div>
+    #             """,
+    #             unsafe_allow_html=True,
+    #         )
+
+    #         if st.button(f"Select {product['name']}", key=product["name"]):
+    #             new_row = pd.DataFrame(
+    #                 [[product["name"], 1, pd.Timestamp.now()]],
+    #                 columns=["Item", "Quantity", "Timestamp"]
+    #             )
+    #             updated_df = pd.concat([df, new_row], ignore_index=True)
+    #             conn.update(worksheet="Orders", data=updated_df)
+    #             st.success(f"Added {product['name']} to Google Sheets!")
 
 
     # # Create a connection object.
