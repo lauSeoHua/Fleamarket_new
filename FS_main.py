@@ -112,7 +112,7 @@ def main():
                     
                     if st.button(f"Select {product['name']}", key=product["name"]):
                         # --- Record the price at the time of order ---
-                        name_product = product['name']
+                        name_product = product['image']
                         price_at_order = price_lookup[name_product]
                         new_row = pd.DataFrame(
                             [[product["name"],int(qty_input), pd.Timestamp.now(), price_at_order]],
