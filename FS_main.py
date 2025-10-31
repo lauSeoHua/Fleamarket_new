@@ -9,13 +9,7 @@ import datetime
 import pytz
 import time
 # Set your timezone, e.g., Singapore
-time_zone = pytz.timezone('Asia/Singapore')
-my_time = datetime.utcnow()
-# get the standard UTC time
-UTC = pytz.utc
 
-# it will get the time zone
-# of the specified location
 IST = pytz.timezone('Asia/Singapore')
 datetime_utc = datetime.now(IST)
 current_time = datetime_utc.strftime('%Y:%m:%d %H:%M:%S %Z %z')
