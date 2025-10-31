@@ -3,7 +3,7 @@
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
-from utility import check_password
+#from utility import check_password
 import base64
 
 # Encode images into base 64 for streamlit's visuals
@@ -20,9 +20,9 @@ def main():
         initial_sidebar_state="collapsed" 
     )
 
-    # Do not continue if check_password is not True.  
-    if not check_password():  
-        st.stop()
+    # # Do not continue if check_password is not True.  
+    # if not check_password():  
+    #     st.stop()
 
     # endregion <--------- Streamlit App Configuration --------->
 
