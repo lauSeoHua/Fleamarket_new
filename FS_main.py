@@ -2,6 +2,7 @@
 
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
+import pandas as pd
 from utility import check_password
 import base64
 
@@ -25,42 +26,106 @@ def main():
 
     # endregion <--------- Streamlit App Configuration --------->
 
-    # Create a connection object.
+    st.set_page_config(layout="wide")
+
+    # --- Connect to Google Sheets ---
     conn = st.connection("gsheets", type=GSheetsConnection)
 
-    st.write("Hello")
-    df = conn.read()
-    st.write("Raw data:")
-    st.dataframe(df)
-    singapore_img = image_base64("sakura_lanyard.jpg")
-    with st.container():
-        # set style of the cover page
-        st.markdown(f"""
-        <div style="
-            width: 300px;
-            height: 200px;
-            background-image: url('data:image/jpg;base64,{singapore_img}');
-            background-size: 80%;         /* make image smaller */
-            background-repeat: no-repeat; /* prevent tiling */
-            background-position: center;  /* center the image */
-            background-color: #222;       /* fallback background color */
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 0 0 5px rgba(0,0,0,0.7);
-        ">
-        <h4>POS Display</h4>
-        </div>
+    # --- Read data (optional) ---
+    df = conn.read(worksheet="Orders", usecols=[0, 1, 2], ttl=5)
+    if df is None or df.empty:
+        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp"])
 
-            <h3 style="margin: 0;">Importing and/or selling in Singapore</h3>
-        </div>
-        """, unsafe_allow_html=True)
+    # --- Define your products ---
+    products = [
+        {"name": "Coffee", "image": "sakura_lanyard.jpg"},
+        {"name": "Sandwich", "image": "sakura_lanyard.jpg"},
+        {"name": "Juice", "image": "sakura_lanyard.jpg"},
+        {"name": "Cake", "image": "sakura_lanyard.jpg"}
+    ]
 
-    # Print results.
-    for row in df.itertuples():
-        st.write(f"{row.name} has a :{row.pet}:")
+    # --- Display grid layout ---
+    cols = st.columns(4)  # 4 items per row
+
+    for i, product in enumerate(products):
+        col = cols[i % 4]
+
+        # Load image
+        with open(product["image"], "rb") as f:
+            img_data = f.read()
+        img_base64 = base64.b64encode(img_data).decode("utf-8")
+
+        # Create clickable button with image
+        with col:
+            st.markdown(
+                f"""
+                <div style="
+                    width: 160px;
+                    height: 160px;
+                    background: white url('data:image/jpg;base64,{img_base64}') center/contain no-repeat;
+                    border: 2px solid #ddd;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    margin-bottom: 8px;
+                    cursor: pointer;
+                ">
+                    <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; text-align: center; border-radius: 0 0 10px 10px;">
+                        {product["name"]}
+                    </span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            if st.button(f"Select {product['name']}", key=product["name"]):
+                new_row = pd.DataFrame(
+                    [[product["name"], 1, pd.Timestamp.now()]],
+                    columns=["Item", "Quantity", "Timestamp"]
+                )
+                updated_df = pd.concat([df, new_row], ignore_index=True)
+                conn.update(worksheet="Orders", data=updated_df)
+                st.success(f"Added {product['name']} to Google Sheets!")
+
+
+    # # Create a connection object.
+    # conn = st.connection("gsheets", type=GSheetsConnection)
+
+    # st.write("Hello")
+    # df = conn.read()
+    # st.write("Raw data:")
+    # st.dataframe(df)
+    # singapore_img = image_base64("sakura_lanyard.jpg")
+    # with st.container():
+    #     # set style of the cover page
+    #     st.markdown(f"""
+    #     <div style="
+    #         width: 300px;
+    #         height: 200px;
+    #         background-image: url('data:image/jpg;base64,{singapore_img}');
+    #         background-size: 80%;         /* make image smaller */
+    #         background-repeat: no-repeat; /* prevent tiling */
+    #         background-position: center;  /* center the image */
+    #         background-color: #222;       /* fallback background color */
+    #         border-radius: 10px;
+    #         display: flex;
+    #         align-items: center;
+    #         justify-content: center;
+    #         color: white;
+    #         text-shadow: 0 0 5px rgba(0,0,0,0.7);
+    #     ">
+    #     <h4>POS Display</h4>
+    #     </div>
+
+    #         <h3 style="margin: 0;">Importing and/or selling in Singapore</h3>
+    #     </div>
+    #     """, unsafe_allow_html=True)
+
+    # # Print results.
+    # for row in df.itertuples():
+    #     st.write(f"{row.name} has a :{row.pet}:")
 
 if __name__ == '__main__':
     main()
