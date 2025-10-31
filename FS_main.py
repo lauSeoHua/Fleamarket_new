@@ -32,19 +32,28 @@ def main():
     df = conn.read()
     st.write("Raw data:")
     st.dataframe(df)
-    singapore_img = image_base64("singapore.jpg")
+    singapore_img = image_base64("sakura_lanyard.jpg")
     with st.container():
         # set style of the cover page
         st.markdown(f"""
         <div style="
+            width: 300px;
+            height: 200px;
             background-image: url('data:image/jpg;base64,{singapore_img}');
-            background-size: cover;
-            background-position: top;
-            padding: 120px 20px;
+            background-size: 80%;         /* make image smaller */
+            background-repeat: no-repeat; /* prevent tiling */
+            background-position: center;  /* center the image */
+            background-color: #222;       /* fallback background color */
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+            text-shadow: 0 0 5px rgba(0,0,0,0.7);
         ">
+        <h4>POS Display</h4>
+        </div>
+
             <h3 style="margin: 0;">Importing and/or selling in Singapore</h3>
         </div>
         """, unsafe_allow_html=True)
