@@ -95,46 +95,91 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
-            #Quantity controls
-            # Text input for quantity
+
+            # Quantity input
             qty_input = st.text_input(
-                f"Quantity ({product["name"]})",
+                f"Quantity ({product['name']})",
                 value="1",
-                key=f"qty_{product["name"]}",
+                key=f"qty_{product['name']}",
                 max_chars=3
             )
-            # --- Data validation ---
+
+            # Validate quantity
             try:
                 qty = int(qty_input)
                 if qty <= 0:
                     st.warning("Quantity must be at least 1.")
-                else:
-                    
-                    if st.button(f"Select {product['name']}", key=product["name"]):
-                        # --- Record the price at the time of order ---
-                        name_product = product['image']
-                        price_at_order = price_lookup[name_product]
-                        new_row = pd.DataFrame(
-                            [[product["name"],int(qty_input), pd.Timestamp.now(), price_at_order]],
-                            columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
-                        )
-                        updated_df = pd.concat([df, new_row], ignore_index=True)
-                        conn.update(worksheet="Orders", data=updated_df)
-                        # Create a placeholder container
-                        message_placeholder = st.empty()
-
-                        # Show success message
-                        message_placeholder.success(f"Added {product['name']} to Google Sheets!")
-
-                        # Wait 10 seconds
-                        time.sleep(1)
-
-                        # Clear the message
-                        message_placeholder.empty()
-                        #st.success(f"Added {product['name']} to Google Sheets!")
+                    continue
             except ValueError:
                 st.error("Please enter a valid integer for quantity.")
-                qty = None  # prevent adding invalid input
+                continue
+
+            # Button to add order
+            if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
+                price_at_order = price_lookup[product["name"]]
+                new_row = pd.DataFrame(
+                    [[product["name"], qty, datetime.now(), price_at_order]],
+                    columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
+                )
+                updated_df = pd.concat([df, new_row], ignore_index=True)
+                # conn.update(worksheet="Orders", data=updated_df)  # uncomment in real app
+
+                # Flash message (non-blocking)
+                msg_placeholder = st.empty()
+                msg_placeholder.success(f"Added {qty} × {product['name']} (${price_at_order*qty:.2f}) to Google Sheets!")
+
+                # Optional: auto-clear after 10 seconds using JS (better than time.sleep)
+                st.markdown(
+                    """
+                    <script>
+                    setTimeout(function() {
+                        const messages = window.parent.document.querySelectorAll(".stAlert");
+                        messages.forEach(msg => msg.remove());
+                    }, 10000);
+                    </script>
+                    """,
+                    unsafe_allow_html=True
+                )
+            # #Quantity controls
+            # # Text input for quantity
+            # qty_input = st.text_input(
+            #     f"Quantity ({product["name"]})",
+            #     value="1",
+            #     key=f"qty_{product["name"]}",
+            #     max_chars=3
+            # )
+            # # --- Data validation ---
+            # try:
+            #     qty = int(qty_input)
+            #     if qty <= 0:
+            #         st.warning("Quantity must be at least 1.")
+            #     else:
+                    
+            #         if st.button(f"Select {product['name']}", key=product["name"]):
+            #             # --- Record the price at the time of order ---
+            #             name_product = product['image']
+            #             price_at_order = price_lookup[name_product]
+            #             new_row = pd.DataFrame(
+            #                 [[product["name"],int(qty_input), pd.Timestamp.now(), price_at_order]],
+            #                 columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
+            #             )
+            #             updated_df = pd.concat([df, new_row], ignore_index=True)
+            #             conn.update(worksheet="Orders", data=updated_df)
+            #             # Create a placeholder container
+            #             message_placeholder = st.empty()
+
+            #             # Show success message
+            #             message_placeholder.success(f"Added {product['name']} to Google Sheets!")
+
+            #             # Wait 10 seconds
+            #             time.sleep(1)
+
+            #             # Clear the message
+            #             message_placeholder.empty()
+            #             #st.success(f"Added {product['name']} to Google Sheets!")
+            # except ValueError:
+            #     st.error("Please enter a valid integer for quantity.")
+            #     qty = None  # prevent adding invalid input
             
 
 if __name__ == '__main__':
