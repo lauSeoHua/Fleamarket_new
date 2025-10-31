@@ -41,9 +41,9 @@ def main():
     # --- Define your products ---
     products = [
         {"name": "Sakura Lanyard", "image": "sakura_lanyard.jpg","price": price_lookup.get("sakura_lanyard.jpg", 0.0) },
-        {"name": "Pink Lanyard", "image": "pink_lanyard.jpg","price": 3.50},
-        {"name": "Juice", "image": "sakura_lanyard.jpg","price": 3.50},
-        {"name": "Cake", "image": "sakura_lanyard.jpg","price": 3.50}
+        {"name": "Pink Lanyard", "image": "pink_lanyard.jpg","price": price_lookup.get("pink_lanyard.jpg", 0.0) },
+        {"name": "Pouch(S)", "image": "comestic_pouch_small.jpg","price": price_lookup.get("comestic_pouch_small.jpg", 0.0)},
+        {"name": "Pouch(B)", "image": "comestic_pouch_big.jpg","price": price_lookup.get("comestic_pouch_big.jpg", 0.0)}
     ]
     
     # --- Display grid layout ---
@@ -75,7 +75,7 @@ def main():
                     cursor: pointer;
                 ">
                     <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; text-align: center; border-radius: 0 0 10px 10px;">
-                        {product["name"]} - {product["price"]}
+                        {product["name"]} - $ {product["price"]}
                     </span>
                 </div>
                 """,
