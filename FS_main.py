@@ -85,21 +85,33 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
-            #  # Quantity controls
-            # col1, col2, col3 = st.columns([1,2,1])
-            # with col1:
-            #     if st.button("-", key=f"minus_{product["image"]}"):
-            #         if st.session_state.quantities[product["image"]] > 1:
-            #             st.session_state.quantities[product["image"]] -= 1
-            # with col2:
-            #     st.write(f"Qty: {st.session_state.quantities[product["image"]]}")
-            # with col3:
-            #     if st.button("+", key=f"plus_{product["image"]}"):
-            #         st.session_state.quantities[product["image"]] += 1
+            #Quantity controls
+            # Text input for quantity
+            qty_input = st.text_input(
+                f"Quantity ({item_name})",
+                value="1",
+                key=f"qty_{item_name}",
+                max_chars=3
+            )
+            col1,col2 = st.columns([2,1])
+            with col1:
+                st.write("Qty:")
+            with col2:
+                # Add button
+                # Button to save
+                if st.button("Save Quantity"):
+                    try:
+                        qty = int(qty_input)
+                        if qty <= 0:
+                            st.warning("Quantity must be greater than 0.")
+
+                    except ValueError:
+                        st.error("Please enter a valid number.")
+
 
             if st.button(f"Select {product['name']}", key=product["name"]):
                 new_row = pd.DataFrame(
-                    [[product["name"], 1, pd.Timestamp.now()]],
+                    [[product["name"],qty, pd.Timestamp.now()]],
                     columns=["Item", "Quantity", "Timestamp"]
                 )
                 updated_df = pd.concat([df, new_row], ignore_index=True)
