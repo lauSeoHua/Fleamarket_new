@@ -109,10 +109,11 @@ def main():
                 if qty <= 0:
                     st.warning("Quantity must be at least 1.")
                 else:
-                    # --- Record the price at the time of order ---
-                    name_product = product['name']
-                    price_at_order = price_lookup[name_product]
+                    
                     if st.button(f"Select {product['name']}", key=product["name"]):
+                        # --- Record the price at the time of order ---
+                        name_product = product['name']
+                        price_at_order = price_lookup[name_product]
                         new_row = pd.DataFrame(
                             [[product["name"],int(qty_input), pd.Timestamp.now(), price_at_order]],
                             columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
