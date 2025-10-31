@@ -87,12 +87,12 @@ def main():
             )
             #Quantity controls
             # Text input for quantity
-            # qty_input = st.text_input(
-            #     f"Quantity ({product["name"]})",
-            #     value="1",
-            #     key=f"qty_{product["name"]}",
-            #     max_chars=3
-            # )
+            qty_input = st.text_input(
+                f"Quantity ({product["name"]})",
+                value="1",
+                key=f"qty_{product["name"]}",
+                max_chars=3
+            )
             col1,col2 = st.columns([2,1])
             with col1:
                 st.write("Qty:")
@@ -101,7 +101,7 @@ def main():
                 # Button to save
                 if st.button("Save Quantity"):
                     try:
-                        qty = 1
+                        qty = int(qty_input)
                         if qty <= 0:
                             st.warning("Quantity must be greater than 0.")
 
