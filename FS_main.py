@@ -52,7 +52,10 @@ def main():
         {"name": "Wallet(Short)", "image": "wallet_short.jpg","price": price_lookup.get("wallet_short.jpg", 0.0)},
         {"name": "Earrings", "image": "earrings.jpg","price": price_lookup.get("earrings.jpg", 0.0)},
         {"name": "Taobao T-shirts", "image": "taobao_tshirt.jpg","price": price_lookup.get("taobao_tshirt.jpg", 0.0)},
-        {"name": "Dresses", "image": "dresses.jpg","price": price_lookup.get("dresses.jpg", 0.0)}
+        {"name": "Dresses", "image": "dresses.jpg","price": price_lookup.get("dresses.jpg", 0.0)},
+        {"name": "Bags", "image": "bag.jpg","price": price_lookup.get("bag.jpg", 0.0)},
+        {"name": "Miscellaneous", "image": "misc.jpg","price": price_lookup.get("misc.jpg", 0.0)}
+    
     
     ]
     
