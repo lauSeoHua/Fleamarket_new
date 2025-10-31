@@ -75,7 +75,7 @@ def main():
                     cursor: pointer;
                 ">
                     <span style="background: rgba(0,0,0,0.5); color: white; width: 100%; text-align: center; border-radius: 0 0 10px 10px;">
-                        {product["name"]- product["price"]}
+                        {product["name"]} - {product["price"]}
                     </span>
                 </div>
                 """,
