@@ -88,9 +88,9 @@ def main():
             #Quantity controls
             # Text input for quantity
             qty_input = st.text_input(
-                f"Quantity ({item_name})",
+                f"Quantity ({product["name"]})",
                 value="1",
-                key=f"qty_{item_name}",
+                key=f"qty_{product["name"]}",
                 max_chars=3
             )
             col1,col2 = st.columns([2,1])
