@@ -37,7 +37,7 @@ def main():
     prices_df = conn.read(worksheet="Prices")
     price_lookup = dict(zip(prices_df["Item"], prices_df["Price"]))
     if df is None or df.empty:
-        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp"])
+        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp","Price Sold for"])
 
     # --- Define your products ---
     products = [
@@ -135,7 +135,7 @@ def main():
                     setTimeout(function() {
                         const messages = window.parent.document.querySelectorAll(".stAlert");
                         messages.forEach(msg => msg.remove());
-                    }, 10000);
+                    }, 1000);
                     </script>
                     """,
                     unsafe_allow_html=True
