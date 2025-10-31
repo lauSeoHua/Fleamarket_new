@@ -121,25 +121,31 @@ def main():
                     [[product["name"], qty, pd.Timestamp.now(), price_at_order]],
                     columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                 )
+                # Combine old + new rows
                 updated_df = pd.concat([df, new_row], ignore_index=True)
+                #updated_df = pd.concat([df, new_row], ignore_index=True)
                 conn.update(worksheet="Orders", data=updated_df)  # uncomment in real app
 
                 # Flash message (non-blocking)
                 msg_placeholder = st.empty()
                 msg_placeholder.success(f"Added {qty} × {product['name']} (${price_at_order*qty:.2f}) to Google Sheets!")
 
-                # Optional: auto-clear after 10 seconds using JS (better than time.sleep)
-                st.markdown(
-                    """
-                    <script>
-                    setTimeout(function() {
-                        const messages = window.parent.document.querySelectorAll(".stAlert");
-                        messages.forEach(msg => msg.remove());
-                    }, 1000);
-                    </script>
-                    """,
-                    unsafe_allow_html=True
-                )
+                #Wait 10 seconds
+                time.sleep(1)
+                #Clear the message
+                msg_placeholder.empty()
+                # # Optional: auto-clear after 10 seconds using JS (better than time.sleep)
+                # st.markdown(
+                #     """
+                #     <script>
+                #     setTimeout(function() {
+                #         const messages = window.parent.document.querySelectorAll(".stAlert");
+                #         messages.forEach(msg => msg.remove());
+                #     }, 1000);
+                #     </script>
+                #     """,
+                #     unsafe_allow_html=True
+                # )
             # #Quantity controls
             # # Text input for quantity
             # qty_input = st.text_input(
