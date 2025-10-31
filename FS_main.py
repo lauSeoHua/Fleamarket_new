@@ -92,7 +92,7 @@ def main():
                     if st.session_state.quantities[product["name"]] > 1:
                         st.session_state.quantities[product["name"]] -= 1
             with col2:
-                st.write(f"Qty: {st.session_state.quantities[product["name"]]}")
+                st.write(f"Qty: {st.session_state.quantities[product["image"]]}")
             with col3:
                 if st.button("+", key=f"plus_{product["name"]}"):
                     st.session_state.quantities[product["name"]] += 1
