@@ -49,7 +49,11 @@ def main():
         {"name": "Flower Dome", "image": "flower_dome.jpg","price": price_lookup.get("flower_dome.jpg", 0.0)},
         {"name": "Hair Clip", "image": "hairclip.jpg","price": price_lookup.get("hairclip.jpg", 0.0)},
         {"name": "Wallet(Long)", "image": "wallet_long.jpg","price": price_lookup.get("wallet_long.jpg", 0.0)},
-        {"name": "Wallet(Short)", "image": "wallet_short.jpg","price": price_lookup.get("wallet_short.jpg", 0.0)}
+        {"name": "Wallet(Short)", "image": "wallet_short.jpg","price": price_lookup.get("wallet_short.jpg", 0.0)},
+        {"name": "Earrings", "image": "earrings.jpg","price": price_lookup.get("earrings.jpg", 0.0)},
+        {"name": "Taobao T-shirts", "image": "taobao_tshirt.jpg","price": price_lookup.get("taobao_tshirt.jpg", 0.0)},
+        {"name": "Dresses", "image": "dresses.jpg","price": price_lookup.get("dresses.jpg", 0.0)}
+    
     ]
     
     # --- Display grid layout ---
@@ -107,8 +111,8 @@ def main():
                 else:
                     if st.button(f"Select {product['name']}", key=product["name"]):
                         new_row = pd.DataFrame(
-                            [[product["name"],int(qty_input), pd.Timestamp.now()]],
-                            columns=["Item", "Quantity", "Timestamp"]
+                            [[product["name"],int(qty_input), pd.Timestamp.now(), product["price"]]],
+                            columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                         )
                         updated_df = pd.concat([df, new_row], ignore_index=True)
                         conn.update(worksheet="Orders", data=updated_df)
