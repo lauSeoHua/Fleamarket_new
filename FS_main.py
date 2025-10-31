@@ -38,10 +38,10 @@ def main():
 
     # --- Define your products ---
     products = [
-        {"name": "Coffee", "image": "sakura_lanyard.jpg"},
-        {"name": "Sandwich", "image": "sakura_lanyard.jpg"},
-        {"name": "Juice", "image": "sakura_lanyard.jpg"},
-        {"name": "Cake", "image": "sakura_lanyard.jpg"}
+        {"name": "Sakura Lanyard", "image": "sakura_lanyard.jpg","price": 3.50},
+        {"name": "Pink Lanyard", "image": "pink_lanyard.jpg","price": 3.50},
+        {"name": "Juice", "image": "sakura_lanyard.jpg","price": 3.50},
+        {"name": "Cake", "image": "sakura_lanyard.jpg","price": 3.50}
     ]
 
     # --- Display grid layout ---
