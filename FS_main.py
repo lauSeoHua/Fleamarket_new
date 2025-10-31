@@ -18,7 +18,7 @@ UTC = pytz.utc
 # of the specified location
 IST = pytz.timezone('Asia/Singapore')
 datetime_utc = datetime.now(IST)
-current_time = datetime_utc.strftime('%Y:%m:%d %H:%M:%S %Z %z'))
+current_time = datetime_utc.strftime('%Y:%m:%d %H:%M:%S %Z %z')
 
 
 # Encode images into base 64 for streamlit's visuals
