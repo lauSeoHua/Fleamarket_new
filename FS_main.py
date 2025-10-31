@@ -45,7 +45,8 @@ def main():
         {"name": "Pouch(S)", "image": "comestic_pouch_small.jpg","price": price_lookup.get("comestic_pouch_small.jpg", 0.0)},
         {"name": "Pouch(B)", "image": "comestic_pouch_big.jpg","price": price_lookup.get("comestic_pouch_big.jpg", 0.0)},
         {"name": "Foldable Recyclable Bag", "image": "recyclable_bag.jpg","price": price_lookup.get("recyclable_bag.jpg", 0.0)},
-        {"name": "Flower Dome", "image": "flower_dome.jpg","price": price_lookup.get("flower_dome.jpg", 0.0)}
+        {"name": "Flower Dome", "image": "flower_dome.jpg","price": price_lookup.get("flower_dome.jpg", 0.0)},
+        {"name": "Hair Clip", "image": "hairclip.jpg","price": price_lookup.get("hairclip.jpg", 0.0)}
     ]
     
     # --- Display grid layout ---
@@ -95,53 +96,24 @@ def main():
                 key=f"qty_{product["name"]}",
                 max_chars=3
             )
-           
-            if st.button(f"Select {product['name']}", key=product["name"]):
-                new_row = pd.DataFrame(
-                    [[product["name"],int(qty_input), pd.Timestamp.now()]],
-                    columns=["Item", "Quantity", "Timestamp"]
-                )
-                updated_df = pd.concat([df, new_row], ignore_index=True)
-                conn.update(worksheet="Orders", data=updated_df)
-                st.success(f"Added {product['name']} to Google Sheets!")
-
-
-    # # Create a connection object.
-    # conn = st.connection("gsheets", type=GSheetsConnection)
-
-    # st.write("Hello")
-    # df = conn.read()
-    # st.write("Raw data:")
-    # st.dataframe(df)
-    # singapore_img = image_base64("sakura_lanyard.jpg")
-    # with st.container():
-    #     # set style of the cover page
-    #     st.markdown(f"""
-    #     <div style="
-    #         width: 300px;
-    #         height: 200px;
-    #         background-image: url('data:image/jpg;base64,{singapore_img}');
-    #         background-size: 80%;         /* make image smaller */
-    #         background-repeat: no-repeat; /* prevent tiling */
-    #         background-position: center;  /* center the image */
-    #         background-color: #222;       /* fallback background color */
-    #         border-radius: 10px;
-    #         display: flex;
-    #         align-items: center;
-    #         justify-content: center;
-    #         color: white;
-    #         text-shadow: 0 0 5px rgba(0,0,0,0.7);
-    #     ">
-    #     <h4>POS Display</h4>
-    #     </div>
-
-    #         <h3 style="margin: 0;">Importing and/or selling in Singapore</h3>
-    #     </div>
-    #     """, unsafe_allow_html=True)
-
-    # # Print results.
-    # for row in df.itertuples():
-    #     st.write(f"{row.name} has a :{row.pet}:")
+            # --- Data validation ---
+            try:
+                qty = int(qty_input)
+                if qty <= 0:
+                    st.warning("Quantity must be at least 1.")
+                else:
+                    if st.button(f"Select {product['name']}", key=product["name"]):
+                        new_row = pd.DataFrame(
+                            [[product["name"],int(qty_input), pd.Timestamp.now()]],
+                            columns=["Item", "Quantity", "Timestamp"]
+                        )
+                        updated_df = pd.concat([df, new_row], ignore_index=True)
+                        conn.update(worksheet="Orders", data=updated_df)
+                        st.success(f"Added {product['name']} to Google Sheets!")
+            except ValueError:
+                st.error("Please enter a valid integer for quantity.")
+                qty = None  # prevent adding invalid input
+            
 
 if __name__ == '__main__':
     main()
