@@ -24,6 +24,8 @@ def main():
 
     st.write("Hello")
     df = conn.read()
+    st.write("Raw data:")
+    st.dataframe(df)
 
     # Print results.
     for row in df.itertuples():
