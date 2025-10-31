@@ -44,7 +44,8 @@ def main():
         {"name": "Pink Lanyard", "image": "pink_lanyard.jpg","price": price_lookup.get("pink_lanyard.jpg", 0.0) },
         {"name": "Pouch(S)", "image": "comestic_pouch_small.jpg","price": price_lookup.get("comestic_pouch_small.jpg", 0.0)},
         {"name": "Pouch(B)", "image": "comestic_pouch_big.jpg","price": price_lookup.get("comestic_pouch_big.jpg", 0.0)},
-        {"name": "Foldable Recyclable Bag", "image": "recyclable_bag.jpg","price": price_lookup.get("recyclable_bag.jpg", 0.0)}
+        {"name": "Foldable Recyclable Bag", "image": "recyclable_bag.jpg","price": price_lookup.get("recyclable_bag.jpg", 0.0)},
+        {"name": "Flower Dome", "image": "flower_dome.jpg","price": price_lookup.get("flower_dome.jpg", 0.0)}
     ]
     
     # --- Display grid layout ---
