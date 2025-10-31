@@ -6,14 +6,6 @@ import pandas as pd
 #from utility import check_password
 import base64
 import datetime
-import pytz
-import time
-# Set your timezone, e.g., Singapore
-
-IST = pytz.timezone('Asia/Singapore')
-datetime_utc = datetime.now(IST)
-current_time = datetime_utc.strftime('%Y:%m:%d %H:%M:%S %Z %z')
-
 
 # Encode images into base 64 for streamlit's visuals
 def image_base64(file):
@@ -126,7 +118,7 @@ def main():
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
                 price_at_order = price_lookup[product["image"]]
                 new_row = pd.DataFrame(
-                    [[product["name"], qty, current_time , price_at_order]],
+                    [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order]],
                     columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                 )
                 # Combine old + new rows
