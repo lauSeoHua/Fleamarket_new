@@ -7,11 +7,12 @@ import pandas as pd
 import base64
 import datetime
 import pytz
+import time
 # Set your timezone, e.g., Singapore
 tz = pytz.timezone("Asia/Singapore")
 
 # Get current time in your timezone
-current_time = datetime.now(tz)
+current_time = datetime.datetime(tz)
 # Encode images into base 64 for streamlit's visuals
 def image_base64(file):
     with open(file,"rb") as f:
