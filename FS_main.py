@@ -85,17 +85,17 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
-             # Quantity controls
-            col1, col2, col3 = st.columns([1,2,1])
-            with col1:
-                if st.button("-", key=f"minus_{product["name"]}"):
-                    if st.session_state.quantities[product["name"]] > 1:
-                        st.session_state.quantities[product["name"]] -= 1
-            with col2:
-                st.write(f"Qty: {st.session_state.quantities[product["image"]]}")
-            with col3:
-                if st.button("+", key=f"plus_{product["name"]}"):
-                    st.session_state.quantities[product["name"]] += 1
+            #  # Quantity controls
+            # col1, col2, col3 = st.columns([1,2,1])
+            # with col1:
+            #     if st.button("-", key=f"minus_{product["image"]}"):
+            #         if st.session_state.quantities[product["image"]] > 1:
+            #             st.session_state.quantities[product["image"]] -= 1
+            # with col2:
+            #     st.write(f"Qty: {st.session_state.quantities[product["image"]]}")
+            # with col3:
+            #     if st.button("+", key=f"plus_{product["image"]}"):
+            #         st.session_state.quantities[product["image"]] += 1
 
             if st.button(f"Select {product['name']}", key=product["name"]):
                 new_row = pd.DataFrame(
