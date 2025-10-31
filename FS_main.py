@@ -5,7 +5,7 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 #from utility import check_password
 import base64
-import time
+import datetime
 
 # Encode images into base 64 for streamlit's visuals
 def image_base64(file):
@@ -118,7 +118,7 @@ def main():
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
                 price_at_order = price_lookup[product["image"]]
                 new_row = pd.DataFrame(
-                    [[product["name"], qty, pd.Timestamp.now(), price_at_order]],
+                    [[product["name"], qty, datetime.now(), price_at_order]],
                     columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                 )
                 # Combine old + new rows
