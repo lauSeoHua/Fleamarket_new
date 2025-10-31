@@ -5,7 +5,7 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 #from utility import check_password
 import base64
-import datetime
+import time
 
 # Encode images into base 64 for streamlit's visuals
 def image_base64(file):
