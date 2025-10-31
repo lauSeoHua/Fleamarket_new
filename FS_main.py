@@ -33,7 +33,7 @@ def main():
     conn = st.connection("gsheets", type=GSheetsConnection)
 
     # --- Read data (optional) ---
-    df = conn.read(worksheet="Orders", usecols=[0, 1, 2], ttl=5)
+    df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3], ttl=5)
     prices_df = conn.read(worksheet="Prices")
     price_lookup = dict(zip(prices_df["Item"], prices_df["Price"]))
     if df is None or df.empty:
