@@ -116,9 +116,9 @@ def main():
 
             # Button to add order
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
-                price_at_order = price_lookup[product["name"]]
+                price_at_order = price_lookup[product["image"]]
                 new_row = pd.DataFrame(
-                    [[product["name"], qty, datetime.now(), price_at_order]],
+                    [[product["name"], qty, pd.Timestamp.now(), price_at_order]],
                     columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                 )
                 updated_df = pd.concat([df, new_row], ignore_index=True)
