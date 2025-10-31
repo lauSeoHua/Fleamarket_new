@@ -122,7 +122,7 @@ def main():
                     columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
                 )
                 updated_df = pd.concat([df, new_row], ignore_index=True)
-                # conn.update(worksheet="Orders", data=updated_df)  # uncomment in real app
+                conn.update(worksheet="Orders", data=updated_df)  # uncomment in real app
 
                 # Flash message (non-blocking)
                 msg_placeholder = st.empty()
