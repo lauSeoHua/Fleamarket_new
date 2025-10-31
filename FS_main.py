@@ -93,25 +93,10 @@ def main():
                 key=f"qty_{product["name"]}",
                 max_chars=3
             )
-            col1,col2 = st.columns([2,1])
-            with col1:
-                st.write("Qty:")
-            with col2:
-                # Add button
-                # Button to save
-                if st.button("Save Quantity"):
-                    try:
-                        qty = int(qty_input)
-                        if qty <= 0:
-                            st.warning("Quantity must be greater than 0.")
-
-                    except ValueError:
-                        st.error("Please enter a valid number.")
-
-
+           
             if st.button(f"Select {product['name']}", key=product["name"]):
                 new_row = pd.DataFrame(
-                    [[product["name"],qty, pd.Timestamp.now()]],
+                    [[product["name"],int(qty_input), pd.Timestamp.now()]],
                     columns=["Item", "Quantity", "Timestamp"]
                 )
                 updated_df = pd.concat([df, new_row], ignore_index=True)
