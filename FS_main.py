@@ -47,10 +47,14 @@ def main():
     ]
     
     # --- Display grid layout ---
-    cols = st.columns(4)  # 4 items per row
+    cols = st.columns(5)  # 4 items per row
+
+    # Initialize session state for quantities
+    if "quantities" not in st.session_state:
+        st.session_state.quantities = {item: 1 for item in price_lookup.keys()}
 
     for i, product in enumerate(products):
-        col = cols[i % 4]
+        col = cols[i % 5]
 
         # Load image
         with open(product["image"], "rb") as f:
@@ -81,6 +85,17 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
+             # Quantity controls
+            col1, col2, col3 = st.columns([1,2,1])
+            with col1:
+                if st.button("-", key=f"minus_{product["name"]}"):
+                    if st.session_state.quantities[product["name"]] > 1:
+                        st.session_state.quantities[product["name"]] -= 1
+            with col2:
+                st.write(f"Qty: {st.session_state.quantities[product["name"]]}")
+            with col3:
+                if st.button("+", key=f"plus_{product["name"]}"):
+                    st.session_state.quantities[product["name"]] += 1
 
             if st.button(f"Select {product['name']}", key=product["name"]):
                 new_row = pd.DataFrame(
