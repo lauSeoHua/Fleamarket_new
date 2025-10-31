@@ -5,6 +5,7 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 #from utility import check_password
 import base64
+import time
 
 # Encode images into base 64 for streamlit's visuals
 def image_base64(file):
@@ -111,7 +112,18 @@ def main():
                         )
                         updated_df = pd.concat([df, new_row], ignore_index=True)
                         conn.update(worksheet="Orders", data=updated_df)
-                        st.success(f"Added {product['name']} to Google Sheets!")
+                        # Create a placeholder container
+                        message_placeholder = st.empty()
+
+                        # Show success message
+                        message_placeholder.success(f"Added {product['name']} to Google Sheets!")
+
+                        # Wait 10 seconds
+                        time.sleep(10)
+
+                        # Clear the message
+                        message_placeholder.empty()
+                        #st.success(f"Added {product['name']} to Google Sheets!")
             except ValueError:
                 st.error("Please enter a valid integer for quantity.")
                 qty = None  # prevent adding invalid input
