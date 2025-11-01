@@ -99,27 +99,30 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
+            col1, col2 = st.columns(2)
 
-            # Quantity input
-            qty_input = st.text_input(
-                f"Quantity ({product['name']})",
-                value="1",
-                key=f"qty_{product['name']}",
-                max_chars=3
-            )
+            with col1:
+                # Quantity input
+                qty_input = st.text_input(
+                    f"Quantity ({product['name']})",
+                    value="1",
+                    key=f"qty_{product['name']}",
+                    max_chars=3
+                )
 
-            # Validate quantity
-            try:
-                qty = int(qty_input)
-                if qty <= 0:
-                    st.warning("Quantity must be at least 1.")
+                # Validate quantity
+                try:
+                    qty = int(qty_input)
+                    if qty <= 0:
+                        st.warning("Quantity must be at least 1.")
+                        continue
+                except ValueError:
+                    st.error("Please enter a valid integer for quantity.")
                     continue
-            except ValueError:
-                st.error("Please enter a valid integer for quantity.")
-                continue
             
-            # Checkbox (below the text input)
-            paynow = st.checkbox("Paynow",key=str(pd.Timedelta(hours=8+i)))
+            with col2:
+                # Checkbox (below the text input)
+                paynow = st.checkbox("Paynow",key=str(pd.Timedelta(hours=8+i)))
 
             # Button to add order
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
