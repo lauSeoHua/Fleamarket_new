@@ -22,6 +22,6 @@ numeric_columns = df.select_dtypes(include=['number']).columns.tolist()
 if numeric_columns:
     #selected_column = st.selectbox("Select a numeric column to calculate total:", numeric_columns)
     total = df["Money earned"].sum()
-    st.success(f"✅ {selected_column}: {total:,}")
+    st.success(f"✅ Money earned: {total:,}")
 else:
     st.warning("No numeric columns found in the uploaded data.")
