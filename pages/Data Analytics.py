@@ -24,8 +24,8 @@ if numeric_columns:
     total = df["Money earned"].sum()
     total_paynow = df["Pay Now"].sum()
     total_cash = df["Cash"].sum()
-    st.success(f"✅ Money earned: {total:,}")
-    st.success(f"✅ Money earned (paynow): {total_paynow:,}")
-    st.success(f"✅ Money earned (cash): {total_cash:,}")
+    st.success(f"✅ Money earned (total): {total:,}")
+    st.write(f"Money earned (paynow): {total_paynow:,}")
+    st.write(f"Money earned (cash): {total_cash:,}")
 else:
     st.warning("No numeric columns found in the uploaded data.")
