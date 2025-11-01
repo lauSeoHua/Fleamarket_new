@@ -121,7 +121,7 @@ def main():
                 continue
             
             # Checkbox (below the text input)
-            paynow = st.checkbox("Paynow",key=str(pd.Timedelta(hours=8)))
+            paynow = st.checkbox("Paynow",key=str(pd.Timedelta(hours=8+i)))
 
             # Button to add order
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
