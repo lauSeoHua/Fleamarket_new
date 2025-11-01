@@ -17,7 +17,7 @@ def main():
     # region <--------- Streamlit App Configuration --------->
     st.set_page_config(
         layout="centered",
-        page_title="AI Champions Bootcamp Proof Of Concept",
+        page_title="Fleamarket",
         initial_sidebar_state="collapsed" 
     )
 
@@ -54,8 +54,9 @@ def main():
         {"name": "Taobao T-shirts", "image": "taobao_tshirt.jpg","price": price_lookup.get("taobao_tshirt.jpg", 0.0)},
         {"name": "Dresses", "image": "dresses.jpg","price": price_lookup.get("dresses.jpg", 0.0)},
         {"name": "Bags", "image": "bag.jpg","price": price_lookup.get("bag.jpg", 0.0)},
-        {"name": "Miscellaneous", "image": "misc.jpg","price": price_lookup.get("misc.jpg", 0.0)}
-    
+        {"name": "Miscellaneous", "image": "misc.jpg","price": price_lookup.get("misc.jpg", 0.0)},
+        {"name": "Sling Bag", "image": "slingbag.jpg","price": price_lookup.get("slingbag.jpg", 0.0)}
+
     
     ]
     
