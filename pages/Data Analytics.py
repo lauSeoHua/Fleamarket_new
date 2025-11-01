@@ -13,7 +13,7 @@ st.title('Statistics')
 conn = st.connection("gsheets", type=GSheetsConnection)
 
 # --- Read data (optional) ---
-df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3], ttl=5)
+df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3,4], ttl=5)
 prices_df = conn.read(worksheet="Prices")
 
 # Let user choose a column to calculate total
