@@ -33,16 +33,16 @@ def main():
     conn = st.connection("gsheets", type=GSheetsConnection)
 
     # --- Read data (optional) ---
-    df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3,4], ttl=5)
+    df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3,4,5,6], ttl=5)
     prices_df = conn.read(worksheet="Prices")
     price_lookup = dict(zip(prices_df["Item"], prices_df["Price"]))
     if df is None or df.empty:
-        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp","Price Sold for","Money earned"])
+        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp","Price Sold for","Money earned","Pay Now","Cash"])
 
     # --- Define your products ---
     products = [
         {"name": "Sakura Lanyard", "image": "sakura_lanyard.jpg","price": price_lookup.get("sakura_lanyard.jpg", 0.0) },
-        {"name": "Pink Lanyard", "image": "pink_lanyard.jpg","price": price_lookup.get("pink_lanyard.jpg", 0.0) },
+        {"name": "Cartoon Lanyard", "image": "pink_lanyard.jpg","price": price_lookup.get("pink_lanyard.jpg", 0.0) },
         {"name": "Pouch(S)", "image": "comestic_pouch_small.jpg","price": price_lookup.get("comestic_pouch_small.jpg", 0.0)},
         {"name": "Pouch(B)", "image": "comestic_pouch_big.jpg","price": price_lookup.get("comestic_pouch_big.jpg", 0.0)},
         {"name": "Recyclable Bag", "image": "recyclable_bag.jpg","price": price_lookup.get("recyclable_bag.jpg", 0.0)},
@@ -119,14 +119,23 @@ def main():
             except ValueError:
                 st.error("Please enter a valid integer for quantity.")
                 continue
+            
+            # Checkbox (below the text input)
+            paynow = st.checkbox("Paynow")
 
             # Button to add order
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
                 price_at_order = price_lookup[product["image"]]
-                new_row = pd.DataFrame(
-                    [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order, price_at_order*qty]],
-                    columns=["Item", "Quantity", "Timestamp", "Price Sold for","Money earned"]
-                )
+                if paynow:
+                    new_row = pd.DataFrame(
+                        [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order, price_at_order*qty,price_at_order*qty,""]],
+                        columns=["Item", "Quantity", "Timestamp", "Price Sold for","Money earned","Pay Now","Cash"]
+                    )
+                else:
+                    new_row = pd.DataFrame(
+                        [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order, price_at_order*qty,"",price_at_order*qty]],
+                        columns=["Item", "Quantity", "Timestamp", "Price Sold for","Money earned","Pay Now","Cash"]
+                    )
                 # Combine old + new rows
                 updated_df = pd.concat([df, new_row], ignore_index=True)
                 #updated_df = pd.concat([df, new_row], ignore_index=True)
