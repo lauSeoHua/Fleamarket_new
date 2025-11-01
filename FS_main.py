@@ -33,11 +33,11 @@ def main():
     conn = st.connection("gsheets", type=GSheetsConnection)
 
     # --- Read data (optional) ---
-    df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3], ttl=5)
+    df = conn.read(worksheet="Orders", usecols=[0, 1, 2,3,4], ttl=5)
     prices_df = conn.read(worksheet="Prices")
     price_lookup = dict(zip(prices_df["Item"], prices_df["Price"]))
     if df is None or df.empty:
-        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp","Price Sold for"])
+        df = pd.DataFrame(columns=["Item", "Quantity", "Timestamp","Price Sold for","Money earned"])
 
     # --- Define your products ---
     products = [
@@ -121,8 +121,8 @@ def main():
             if st.button(f"Select {product['name']}", key=f"btn_{product['name']}"):
                 price_at_order = price_lookup[product["image"]]
                 new_row = pd.DataFrame(
-                    [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order]],
-                    columns=["Item", "Quantity", "Timestamp", "Price Sold for"]
+                    [[product["name"], qty, pd.Timestamp.now()+ pd.Timedelta(hours=8), price_at_order, price_at_order*qty]],
+                    columns=["Item", "Quantity", "Timestamp", "Price Sold for","Money earned"]
                 )
                 # Combine old + new rows
                 updated_df = pd.concat([df, new_row], ignore_index=True)
